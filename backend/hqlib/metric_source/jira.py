@@ -54,31 +54,31 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
 
     def nr_open_bugs(self) -> int:
         """ Return the number of open bugs. """
-        return self.__query_total(self.__open_bug_query_id)
+        return self.query_total(self.__open_bug_query_id)
 
     def nr_open_security_bugs(self) -> int:
         """ Return the number of open security bugs. """
-        return self.__query_total(self.__open_security_bug_query_id)
+        return self.query_total(self.__open_security_bug_query_id)
 
     def nr_open_static_security_analysis_bugs(self) -> int:
         """ Return the number of open static security analysis bugs. """
-        return self.__query_total(self.__open_static_security_analysis_bug_query_id)
+        return self.query_total(self.__open_static_security_analysis_bug_query_id)
 
     def nr_open_findings_a_environment(self) -> int:
         """ Return the number of open findings in the A-environment. """
-        return self.__query_total(self.__nr_open_findings_a_environment_query_id)
+        return self.query_total(self.__nr_open_findings_a_environment_query_id)
 
     def nr_open_findings_i_environment(self) -> int:
         """ Return the number of open findings in the I-environment. """
-        return self.__query_total(self.__nr_open_findings_i_environment_query_id)
+        return self.query_total(self.__nr_open_findings_i_environment_query_id)
 
     def nr_open_findings_f_environment(self) -> int:
         """ Return the number of open findings in the F-environment. """
-        return self.__query_total(self.__nr_open_findings_f_environment_query_id)
+        return self.query_total(self.__nr_open_findings_f_environment_query_id)
 
     def nr_technical_debt_issues(self) -> int:
         """ Return the number of technical debt issues. """
-        return self.__query_total(self.__technical_debt_issues_query_id)
+        return self.query_total(self.__technical_debt_issues_query_id)
 
     def manual_test_cases_time(self) -> float:
         """ Return the number of minutes spend on manual test cases. """
@@ -86,7 +86,7 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
 
     def nr_manual_test_cases(self) -> int:
         """ Return the number of manual test cases. """
-        return self.__query_total(self.__manual_test_cases_query_id)
+        return self.query_total(self.__manual_test_cases_query_id)
 
     def nr_manual_test_cases_not_measured(self) -> int:
         """ Return the number of manual test cases whose duration has not been measured. """
@@ -98,13 +98,13 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
 
     def nr_user_stories_without_security_risk_assessment(self) -> int:
         """ Return the number of user stories without security risk assessment. """
-        return self.__query_total(self.__user_stories_without_security_risk_query_id)
+        return self.query_total(self.__user_stories_without_security_risk_query_id)
 
     def nr_user_stories_without_performance_risk_assessment(self) -> int:
         """ Return the number of user stories without performance risk assessment. """
-        return self.__query_total(self.__user_stories_without_performance_risk_query_id)
+        return self.query_total(self.__user_stories_without_performance_risk_query_id)
 
-    def __query_total(self, query_id: int) -> int:
+    def query_total(self, query_id: int) -> int:
         """ Return the number of results of the specified query. """
         results = self.__get_query(query_id)
         return int(results['total']) if results else -1

@@ -17,7 +17,7 @@ limitations under the License.
 import unittest
 import urllib.error
 
-from hqlib.metric_source import Jira
+from hqlib.metric_source import Jira, JiraFilter
 
 
 class JiraUnderTest(Jira):  # pylint: disable=too-few-public-methods
@@ -255,3 +255,14 @@ class JiraWhenFailingTest(JiraTestCase):
     def test_points_ready(self):
         """ Test that the total number points of ready user stories is -1 when Jira is not available. """
         self.assertEqual(-1, self.__jira.nr_story_points_ready())
+
+
+class JiraFilterTest(unittest.TestCase):
+    """ Test the Jira filter metric source. """
+    def test_nr_issues(self):
+        """ Test that the number of items equals what Jira returns. """
+        self.assertEqual(5, JiraFilter('', '', '', jira=JiraUnderTest('', '', '')).nr_issues('12345'))
+
+    def test_nr_issues_on_error(self):
+        """ Test that the number of items is -1 when an error occurs. """
+        self.assertEqual(-1, JiraFilter('', '', '', jira=JiraUnderTest('raise', '', '')).nr_issues('12345'))

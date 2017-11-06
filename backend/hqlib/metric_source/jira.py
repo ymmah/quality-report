@@ -137,13 +137,13 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
 
     def __get_query(self, query_id: int) -> Optional[Mapping]:
         """ Get the JSON from the query and evaluate it. """
-        query_url = self.__get_query_url(query_id)
+        query_url = self.get_query_url(query_id)
         try:
             return utils.eval_json(self.url_read(query_url)) if query_url else None
         except url_opener.UrlOpener.url_open_exceptions:
             return None
 
-    def __get_query_url(self, query_id: int, search: bool=True) -> Optional[str]:
+    def get_query_url(self, query_id: int, search: bool=True) -> Optional[str]:
         """ Get the query url based on the query id. """
         if not query_id:
             return None
@@ -157,44 +157,44 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
 
     def nr_open_bugs_url(self) -> Optional[str]:
         """ Return the url for the nr of open bug reports query. """
-        return self.__get_query_url(self.__open_bug_query_id, search=False)
+        return self.get_query_url(self.__open_bug_query_id, search=False)
 
     def nr_open_security_bugs_url(self) -> Optional[str]:
         """ Return the url for the nr of open security bug reports query. """
-        return self.__get_query_url(self.__open_security_bug_query_id, search=False)
+        return self.get_query_url(self.__open_security_bug_query_id, search=False)
 
     def nr_open_static_security_analysis_bugs_url(self) -> Optional[str]:
         """ Return the url for the nr of open static security analysis bug reports query. """
-        return self.__get_query_url(self.__open_static_security_analysis_bug_query_id, search=False)
+        return self.get_query_url(self.__open_static_security_analysis_bug_query_id, search=False)
 
     def nr_open_findings_a_environment_url(self) -> Optional[str]:
         """ Return the url for the nr of open findings in the A-environment. """
-        return self.__get_query_url(self.__nr_open_findings_a_environment_query_id, search=False)
+        return self.get_query_url(self.__nr_open_findings_a_environment_query_id, search=False)
 
     def nr_open_findings_i_environment_url(self) -> Optional[str]:
         """ Return the url for the nr of open findings in the I-environment. """
-        return self.__get_query_url(self.__nr_open_findings_i_environment_query_id, search=False)
+        return self.get_query_url(self.__nr_open_findings_i_environment_query_id, search=False)
 
     def nr_open_findings_f_environment_url(self) -> Optional[str]:
         """ Return the url for the nr of open findings in the F-environment. """
-        return self.__get_query_url(self.__nr_open_findings_f_environment_query_id, search=False)
+        return self.get_query_url(self.__nr_open_findings_f_environment_query_id, search=False)
 
     def manual_test_cases_url(self) -> Optional[str]:
         """ Return the url for the manual test cases query. """
-        return self.__get_query_url(self.__manual_test_cases_query_id, search=False)
+        return self.get_query_url(self.__manual_test_cases_query_id, search=False)
 
     def user_stories_ready_url(self) -> Optional[str]:
         """ Return the url for the ready user stories query. """
-        return self.__get_query_url(self.__user_stories_ready_query_id, search=False)
+        return self.get_query_url(self.__user_stories_ready_query_id, search=False)
 
     def nr_technical_debt_issues_url(self) -> Optional[str]:
         """ Return the url for the technical debt issues query. """
-        return self.__get_query_url(self.__technical_debt_issues_query_id, search=False)
+        return self.get_query_url(self.__technical_debt_issues_query_id, search=False)
 
     def user_stories_without_security_risk_assessment_url(self) -> Optional[str]:
         """ Return the url for the user stories without security risk assessment query. """
-        return self.__get_query_url(self.__user_stories_without_security_risk_query_id, search=False)
+        return self.get_query_url(self.__user_stories_without_security_risk_query_id, search=False)
 
     def user_stories_without_performance_risk_assessment_url(self) -> Optional[str]:
         """ Return the url for the user stories without performance risk assessment query. """
-        return self.__get_query_url(self.__user_stories_without_performance_risk_query_id, search=False)
+        return self.get_query_url(self.__user_stories_without_performance_risk_query_id, search=False)

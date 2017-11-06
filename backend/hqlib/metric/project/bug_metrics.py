@@ -28,16 +28,10 @@ class OpenBugs(LowerIsBetterMetric):
     template = 'Het aantal {unit} is {value}.'
     target_value = 50
     low_target_value = 100
-    metric_source_class = metric_source.Jira
-    nr_open_bugs = 'nr_open_bugs'
+    metric_source_class = metric_source.BugTracker
 
     def value(self):
-        nr_open_bugs = getattr(self._metric_source, self.nr_open_bugs)()
-        return -1 if nr_open_bugs in (-1, None) else nr_open_bugs
-
-    def _metric_source_urls(self):
-        nr_open_bugs_url = getattr(self._metric_source, self.nr_open_bugs + '_url')()
-        return [nr_open_bugs_url]
+        return self._metric_source.nr_issues(*self._get_metric_source_ids()) if self._metric_source else -1
 
 
 class OpenSecurityBugs(OpenBugs):
@@ -47,7 +41,7 @@ class OpenSecurityBugs(OpenBugs):
     unit = 'open beveiligingsbugreports'
     target_value = 0
     low_target_value = 3
-    nr_open_bugs = 'nr_open_security_bugs'
+    metric_source_class = metric_source.SecurityBugTracker
 
 
 class OpenStaticSecurityAnalysisBugs(OpenSecurityBugs):
@@ -55,7 +49,7 @@ class OpenStaticSecurityAnalysisBugs(OpenSecurityBugs):
 
     name = 'Hoeveelheid open beveiligingsbugreports uit statische security analyse'
     unit = 'open beveiligingsbugreports uit statische security analyse'
-    nr_open_bugs = 'nr_open_static_security_analysis_bugs'
+    metric_source_class = metric_source.StaticSecurityBugTracker
 
 
 class OpenFindings(OpenBugs):
@@ -71,7 +65,6 @@ class OpenFindingsA(OpenFindings):
 
     unit = OpenFindings.unit + ' in de A-omgeving'
     name = 'Hoeveelheid open bevindingen in A-omgeving'
-    nr_open_bugs = 'nr_open_findings_a_environment'
 
 
 class OpenFindingsI(OpenFindings):
@@ -79,7 +72,6 @@ class OpenFindingsI(OpenFindings):
 
     unit = OpenFindings.unit + ' in de I-omgeving'
     name = 'Hoeveelheid open bevindingen in I-omgeving'
-    nr_open_bugs = 'nr_open_findings_i_environment'
 
 
 class OpenFindingsF(OpenFindings):
@@ -87,7 +79,6 @@ class OpenFindingsF(OpenFindings):
 
     unit = OpenFindings.unit + ' in de F-omgeving'
     name = 'Hoeveelheid open bevindingen in F-omgeving'
-    nr_open_bugs = 'nr_open_findings_f_environment'
 
 
 class TechnicalDebtIssues(LowerIsBetterMetric):

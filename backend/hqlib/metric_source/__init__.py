@@ -22,7 +22,7 @@ from .abstract.owasp_dependency_report import OWASPDependencyReport
 from .abstract.performance_report import PerformanceLoadTestReport, PerformanceEnduranceTestReport, \
     PerformanceScalabilityTestReport
 from .abstract.issue_log import ActionLog, IssueLog, RiskLog
-from .abstract.issue_tracker import IssueTracker
+from .abstract.issue_tracker import BugTracker, SecurityBugTracker, StaticSecurityBugTracker
 from .abstract.team_spirit import TeamSpirit
 from .abstract.test_report import TestReport, UnitTestReport, SystemTestReport
 from .abstract.version_control_system import VersionControlSystem

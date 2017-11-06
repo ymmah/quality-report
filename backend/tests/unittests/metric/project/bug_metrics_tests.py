@@ -26,36 +26,6 @@ class FakeJira(object):
     needs_metric_source_id = metric_source.Jira.needs_metric_source_id
 
     @staticmethod
-    def nr_open_bugs():
-        """ Return a fake number of open bugs. """
-        return 7
-
-    @staticmethod
-    def nr_open_bugs_url():
-        """ Return a fake url for the nr of open bugs query. """
-        return 'http://openbugs/'
-
-    @staticmethod
-    def nr_open_security_bugs():
-        """ Return a fake number of open security bugs. """
-        return 7
-
-    @staticmethod
-    def nr_open_security_bugs_url():
-        """ Return a fake url for the nr of open security bugs query. """
-        return 'http://opensecuritybugs/'
-
-    @staticmethod
-    def nr_open_static_security_analysis_bugs():
-        """ Return a fake number of static security analysis bugs. """
-        return 8
-
-    @staticmethod
-    def nr_open_static_security_analysis_bugs_url():
-        """ Return a fake url for the number of open static security analysis bugs query. """
-        return 'http://openstaticsecurityanalysisbugs/'
-
-    @staticmethod
     def nr_technical_debt_issues():
         """ Return the number of technical debt issues. """
         return 8
@@ -66,55 +36,83 @@ class FakeJira(object):
         return 'http://technicaldebtissues/'
 
 
+class FakeJiraFilter(object):
+    """ Fake Jira filter. """
+
+    metric_source_name = metric_source.JiraFilter.metric_source_name
+    needs_metric_source_id = metric_source.JiraFilter.needs_metric_source_id
+
+    # pylint: disable=unused-argument
+
+    @staticmethod
+    def nr_issues(*metric_source_ids):
+        """ Return a fake number of issues. """
+        return 12
+
+    @staticmethod
+    def metric_source_urls(*metric_source_ids):
+        """ Return a fake url for each query. """
+        return ['http://filter/']
+
+
 class OpenBugsTest(unittest.TestCase):
     """ Unit tests for the number of open bugs metric. """
 
     def setUp(self):
-        self.__project = domain.Project(metric_sources={metric_source.Jira: FakeJira()},
+        jira = FakeJiraFilter()
+        self.__project = domain.Project(metric_sources={metric_source.BugTracker: jira},
+                                        metric_source_ids={jira: '1234'},
                                         requirements=[requirement.TrackBugs])
-        self.__metric = metric.OpenBugs(project=self.__project)
+        self.__metric = metric.OpenBugs(project=self.__project, subject=self.__project)
 
     def test_value(self):
         """ Test that the value is correct. """
-        self.assertEqual(FakeJira.nr_open_bugs(), self.__metric.value())
+        self.assertEqual(FakeJiraFilter.nr_issues(), self.__metric.value())
 
     def test_url(self):
         """ Test that the url is correct. """
-        self.assertEqual({'Jira': FakeJira.nr_open_bugs_url()}, self.__metric.url())
+        self.assertEqual({FakeJiraFilter.metric_source_name: FakeJiraFilter.metric_source_urls()[0]},
+                         self.__metric.url())
 
 
 class OpenSecurityBugsTest(unittest.TestCase):
     """ Unit tests for the number of open security bugs metric. """
 
     def setUp(self):
-        self.__project = domain.Project(metric_sources={metric_source.Jira: FakeJira()},
+        jira = FakeJiraFilter()
+        self.__project = domain.Project(metric_sources={metric_source.SecurityBugTracker: jira},
+                                        metric_source_ids={jira: '1234'},
                                         requirements=[requirement.TrackBugs])
-        self.__metric = metric.OpenSecurityBugs(project=self.__project)
+        self.__metric = metric.OpenSecurityBugs(project=self.__project, subject=self.__project)
 
     def test_value(self):
         """ Test that the value is correct. """
-        self.assertEqual(FakeJira.nr_open_security_bugs(), self.__metric.value())
+        self.assertEqual(FakeJiraFilter.nr_issues(), self.__metric.value())
 
     def test_url(self):
         """ Test that the url is correct. """
-        self.assertEqual({'Jira': FakeJira.nr_open_security_bugs_url()}, self.__metric.url())
+        self.assertEqual({FakeJiraFilter.metric_source_name: FakeJiraFilter.metric_source_urls()[0]},
+                         self.__metric.url())
 
 
 class OpenStaticSecurityAnalysisBugsTest(unittest.TestCase):
     """ Unit tests for the number of open static security analysis bugs metric. """
 
     def setUp(self):
-        self.__project = domain.Project(metric_sources={metric_source.Jira: FakeJira()},
+        jira = FakeJiraFilter()
+        self.__project = domain.Project(metric_sources={metric_source.StaticSecurityBugTracker: jira},
+                                        metric_source_ids={jira: '1234'},
                                         requirements=[requirement.TrackBugs])
-        self.__metric = metric.OpenStaticSecurityAnalysisBugs(project=self.__project)
+        self.__metric = metric.OpenStaticSecurityAnalysisBugs(project=self.__project, subject=self.__project)
 
     def test_value(self):
         """ Test that the value is correct. """
-        self.assertEqual(FakeJira.nr_open_static_security_analysis_bugs(), self.__metric.value())
+        self.assertEqual(FakeJiraFilter.nr_issues(), self.__metric.value())
 
     def test_url(self):
         """ Test that the url is correct. """
-        self.assertEqual({'Jira': FakeJira.nr_open_static_security_analysis_bugs_url()}, self.__metric.url())
+        self.assertEqual({FakeJiraFilter.metric_source_name: FakeJiraFilter.metric_source_urls()[0]},
+                         self.__metric.url())
 
 
 class TechnicalDebtIssuesTest(unittest.TestCase):

@@ -18,10 +18,28 @@ limitations under the License.
 from ... import domain
 
 
-class IssueTracker(domain.MetricSource):
-    """ Abstract base class for issue trackers, such as Jira. """
-    metric_source_name = 'Issue tracker'
+class BugTracker(domain.MetricSource):
+    """ Abstract base class for bug trackers, such as Jira. """
+    metric_source_name = 'Bug tracker'
     needs_metric_source_id = True
+
+    def nr_issues(self, *metric_source_ids: str) -> str:
+        """ Return the number of issues for the metric source ids. """
+        raise NotImplementedError
+
+
+class SecurityBugTracker(BugTracker):
+    """ Abstract base class for security bug trackers. """
+    metric_source_name = 'Security bug tracker'
+
+    def nr_issues(self, *metric_source_ids: str) -> str:
+        """ Return the number of issues for the metric source ids. """
+        raise NotImplementedError
+
+
+class StaticSecurityBugTracker(BugTracker):
+    """ Abstract base class for static security bug trackers. """
+    metric_source_name = 'Static security bug tracker'
 
     def nr_issues(self, *metric_source_ids: str) -> str:
         """ Return the number of issues for the metric source ids. """

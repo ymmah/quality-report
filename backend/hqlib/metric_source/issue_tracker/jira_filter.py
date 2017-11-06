@@ -15,17 +15,26 @@ limitations under the License.
 """
 
 
-from hqlib.metric_source import IssueTracker
+from typing import List
+
+from hqlib.metric_source import BugTracker
 
 
-class JiraFilter(IssueTracker):
+class JiraFilter(BugTracker):
     """ Metric source for Jira filters. The metric source id is the filter id. """
+    metric_source_name = 'Jira filter'
+    needs_metric_source_id = True
+
     def __init__(self, url: str, username: str, password: str, jira=None) -> None:
         from hqlib.metric_source import Jira  # Import here to prevent circular import
         self.__jira = jira or Jira(url, username, password)
         super().__init__()
 
-    def nr_issues(self, *filter_ids: str) -> int:
+    def nr_issues(self, *metric_source_ids: str) -> int:
         """ Return the number of issues in the filter. """
-        results = [self.__jira.query_total(int(filter_id)) for filter_id in filter_ids]
+        results = [self.__jira.query_total(int(metric_source_id)) for metric_source_id in metric_source_ids]
         return -1 if -1 in results else sum(results)
+
+    def metric_source_urls(self, *metric_source_ids: str) -> List[str]:  # pylint: disable=no-self-use
+        """ Return the url(s) to the metric source for the metric source id. """
+        return [self.__jira.get_query_url(int(metric_source_id)) for metric_source_id in metric_source_ids]

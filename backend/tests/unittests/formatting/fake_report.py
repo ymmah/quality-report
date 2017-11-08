@@ -43,6 +43,11 @@ class Section(object):
         """ Return the id prefix of the section. """
         return 'id'
 
+    @staticmethod
+    def product():
+        """ Return a product. """
+        return None
+
     def __getitem__(self, index):
         if index < 2:
             return fake_domain.Metric()
@@ -163,3 +168,7 @@ class Report(object):
     def latest_product_version(self, product):  # pylint: disable=unused-argument
         """ Return the latest version of the product according to Sonar. """
         return '2'
+
+    def latest_product_change_date(self, product):  # pylint: disable=unused-argument
+        """ Return the latest change date of the product. """
+        return datetime.datetime(2017, 1, 1)

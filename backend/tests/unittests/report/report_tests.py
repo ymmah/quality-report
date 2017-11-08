@@ -144,6 +144,14 @@ class QualityReportTest(unittest.TestCase):
         quality_report = report.QualityReport(project)
         self.assertEqual(('Sonar', 'sonar-id'), quality_report.sonar_id(product))
 
+    def test_vcs_id(self):
+        """ Test that the VCS id can be retrieved. """
+        vcs = 'VCS'
+        project = domain.Project('organization', metric_sources={metric_source.VersionControlSystem: vcs})
+        product = domain.Product(metric_source_ids={vcs: 'vcs_id'})
+        quality_report = report.QualityReport(project)
+        self.assertEqual(('VCS', 'vcs_id'), quality_report.vcs_id(product))
+
 
 class QualityReportMetaDataTest(unittest.TestCase):
     """ Unit tests for the meta data methods of the quality report. """

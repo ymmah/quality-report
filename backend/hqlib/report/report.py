@@ -163,12 +163,16 @@ class QualityReport(domain.DomainObject):
         sonar, sonar_id = self.sonar_id(product)
         return sonar.version(sonar_id) if sonar_id else ''
 
-    def last_changed_date(self, product: domain.Product) -> str:
-        """Return the last change date of the product. """
+    def latest_product_change_date(self, product: domain.Product) -> DateTime:
+        """Return the latest change date of the product. """
         vcs, vcs_id = self.vcs_id(product)
-        return vcs.last_changed_data(vcs_id)
+        return vcs.last_changed_date(vcs_id) if vcs_id else datetime.datetime.min
 
-    def vcs_id(self, product):
+    def vcs_id(self, product: domain.Product) -> Tuple[Optional[metric_source.VersionControlSystem], str]:
+        """ Return the version control system of the product and the id of the product in the version control
+            system. """
+        if not product:
+            return None, ''
         vcs = self.__project.metric_source(metric_source.VersionControlSystem)
         vc_systems = vcs if isinstance(vcs, list) else [vcs]
         for vcs in vc_systems:

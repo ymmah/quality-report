@@ -183,8 +183,8 @@ title='{hover}' border='0' />", "status_start_date": {status_start_date}, "measu
     @classmethod
     def __sections(cls, report: QualityReport) -> str:
         """ Return a JSON list of the report sections. """
-        return ', '.join(['{{"id": "{id_}", "title": "{title}", "subtitle": "{subtitle}"}}'.format(
-            id_=section.id_prefix(), title=section.title(), subtitle=section.subtitle())
+        return ', '.join(['{{"id": "{id_}", "title": "{title}", "subtitle": "{subtitle}", "latest_change_date": "{latest_change_date}"}}'.format(
+            id_=section.id_prefix(), title=section.title(), subtitle=section.subtitle(), latest_change_date=report.latest_product_change_date(section.product()))
             for section in report.sections()])
 
     @classmethod

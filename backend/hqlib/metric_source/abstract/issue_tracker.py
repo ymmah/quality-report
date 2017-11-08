@@ -44,3 +44,21 @@ class StaticSecurityBugTracker(BugTracker):
     def nr_issues(self, *metric_source_ids: str) -> str:
         """ Return the number of issues for the metric source ids. """
         raise NotImplementedError
+
+
+class FindingTracker(BugTracker):
+    """ Abstract base class for finding strackers. """
+    metric_source_name = 'Finding tracker'
+
+    def nr_issues(self, *metric_source_ids: str) -> str:
+        """ Return the number of issues for the metric source ids. """
+        raise NotImplementedError
+
+
+class TechnicalDebtTracker(BugTracker):
+    """ Abstract base class for finding strackers. """
+    metric_source_name = 'Technische schuld tracker'
+
+    def nr_issues(self, *metric_source_ids: str) -> str:
+        """ Return the number of issues for the metric source ids. """
+        raise NotImplementedError

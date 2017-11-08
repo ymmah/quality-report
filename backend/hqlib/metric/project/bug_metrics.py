@@ -55,46 +55,18 @@ class OpenStaticSecurityAnalysisBugs(OpenSecurityBugs):
 class OpenFindings(OpenBugs):
     """ Metric for open findings in different test environments. """
 
+    name = 'Hoeveelheid open bevindingen'
     unit = 'open blokkerende bevindingen'
     target_value = 0
     low_target_value = 0
+    metric_source_class = metric_source.FindingTracker
 
 
-class OpenFindingsA(OpenFindings):
-    """ Metric for open findings in the A-environment. """
-
-    unit = OpenFindings.unit + ' in de A-omgeving'
-    name = 'Hoeveelheid open bevindingen in A-omgeving'
-
-
-class OpenFindingsI(OpenFindings):
-    """ Metric for open findings in the I-environment. """
-
-    unit = OpenFindings.unit + ' in de I-omgeving'
-    name = 'Hoeveelheid open bevindingen in I-omgeving'
-
-
-class OpenFindingsF(OpenFindings):
-    """ Metric for open findings in the F-environment. """
-
-    unit = OpenFindings.unit + ' in de F-omgeving'
-    name = 'Hoeveelheid open bevindingen in F-omgeving'
-
-
-class TechnicalDebtIssues(LowerIsBetterMetric):
+class TechnicalDebtIssues(OpenBugs):
     """ Metric for measuring the number of technical debt issues. """
 
     name = 'Hoeveelheid technische schuld issues'
     unit = 'technische schuld issues'
-    norm_template = 'Het aantal {unit} is maximaal {target}. Meer dan {low_target} {unit} is rood.'
-    template = 'Het aantal {unit} is {value}.'
     target_value = 10
     low_target_value = 50
-    metric_source_class = metric_source.Jira
-
-    def value(self):
-        nr_issues = self._metric_source.nr_technical_debt_issues()
-        return -1 if nr_issues in (-1, None) else nr_issues
-
-    def _metric_source_urls(self):
-        return [self._metric_source.nr_technical_debt_issues_url()]
+    metric_source_class = metric_source.TechnicalDebtTracker

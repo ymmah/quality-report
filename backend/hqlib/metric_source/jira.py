@@ -26,7 +26,7 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
     metric_source_name = 'Jira'
 
     def __init__(self, url: str, username: str, password: str, open_bug_query_id: int=None,
-                 open_security_bug_query_id: int=None, open_static_security_analysis_bug_query_id: int=None,
+                 open_security_bug_query_id: int=None,
                  manual_test_cases_query_id: int=None,
                  user_stories_ready_query_id: int=None,
                  technical_debt_issues_query_id: int=None,
@@ -39,7 +39,6 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
                  user_story_points_field: str='customfield_10002') -> None:
         self.__open_bug_query_id = open_bug_query_id
         self.__open_security_bug_query_id = open_security_bug_query_id
-        self.__open_static_security_analysis_bug_query_id = open_static_security_analysis_bug_query_id
         self.__manual_test_cases_query_id = manual_test_cases_query_id
         self.__manual_test_cases_duration_field = manual_test_cases_duration_field
         self.__user_stories_ready_query_id = user_stories_ready_query_id
@@ -59,10 +58,6 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
     def nr_open_security_bugs(self) -> int:
         """ Return the number of open security bugs. """
         return self.query_total(self.__open_security_bug_query_id)
-
-    def nr_open_static_security_analysis_bugs(self) -> int:
-        """ Return the number of open static security analysis bugs. """
-        return self.query_total(self.__open_static_security_analysis_bug_query_id)
 
     def nr_open_findings_a_environment(self) -> int:
         """ Return the number of open findings in the A-environment. """
@@ -162,10 +157,6 @@ class Jira(domain.MetricSource, url_opener.UrlOpener):
     def nr_open_security_bugs_url(self) -> Optional[str]:
         """ Return the url for the nr of open security bug reports query. """
         return self.get_query_url(self.__open_security_bug_query_id, search=False)
-
-    def nr_open_static_security_analysis_bugs_url(self) -> Optional[str]:
-        """ Return the url for the nr of open static security analysis bug reports query. """
-        return self.get_query_url(self.__open_static_security_analysis_bug_query_id, search=False)
 
     def nr_open_findings_a_environment_url(self) -> Optional[str]:
         """ Return the url for the nr of open findings in the A-environment. """

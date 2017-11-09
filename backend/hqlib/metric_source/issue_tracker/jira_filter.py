@@ -37,4 +37,5 @@ class JiraFilter(BugTracker):
 
     def metric_source_urls(self, *metric_source_ids: str) -> List[str]:  # pylint: disable=no-self-use
         """ Return the url(s) to the metric source for the metric source id. """
-        return [self.__jira.get_query_url(int(metric_source_id)) for metric_source_id in metric_source_ids]
+        return [self.__jira.get_query_url(int(metric_source_id), search=False)
+                for metric_source_id in metric_source_ids]

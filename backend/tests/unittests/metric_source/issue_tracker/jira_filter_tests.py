@@ -48,5 +48,5 @@ class JiraFilterTest(unittest.TestCase):
 
     def test_url(self):
         """ Test that the Jira filter returns the correct url for the filters. """
-        self.assertEqual(['http://search'],
+        self.assertEqual(['http://view'],
                          JiraFilter('', '', '', jira=JiraUnderTest('', '', '')).metric_source_urls('12345'))
